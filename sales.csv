@@ -1,0 +1,16 @@
+Date,Region,Product,Sales
+ 2026-01-05 , North  , Laptop   ,85000
+ 2026-01-08 , South  , Mouse    ,2500
+ 2026-01-12 , North  , Keyboard ,5000
+ 2026-02-03 , East   , Laptop   ,90000
+ 2026-02-10 , West   , Mouse    ,3000
+ 2026-02-15 , South  , Laptop   ,82000
+ 2026-03-02 , North  , Monitor  ,35000
+ 2026-03-11 , East   , Keyboard ,5500
+ 2026-03-20 , West   , Laptop   ,88000
+ 2026-04-05 , South  , Monitor  ,37000
+ 2026-04-18 , North  , Mouse    ,2800
+ 2026-05-07 , East   , Laptop   ,91000
+ 2026-05-21 , West   , Keyboard ,5200
+ 2026-06-09 , South  , Laptop   ,87000
+ 2026-06-25 , North  , Monitor  ,34000
