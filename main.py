@@ -9,6 +9,7 @@ data.to_sql('sales',conn,if_exists='replace',index=False)
 cursor=conn.cursor()
 #-
 def main():
+    print(">>>Sales-Analyzer")
     print("1. What is the total sales?")
     print("2. What are the total sales by region?")
     print("3. What are the top 5 products?")
