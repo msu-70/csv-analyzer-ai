@@ -1,9 +1,11 @@
 import sqlite3 as sql
 import pandas as pd
+
 #-
 conn=sql.connect('SalesData.db',check_same_thread=False)
 cursor=conn.cursor()
 
+#
 def process(file):
     data=pd.read_csv(file)
     data['Date'] = data['Date'].str.strip()
@@ -43,7 +45,7 @@ def main():
         Avrg_Sale()
     elif reply=='5':
         Sale_Trend()
-#-
+#
 def Total_Sales():
     cursor.execute("SELECT SUM(Sales) FROM sales")
     result=cursor.fetchone()
@@ -94,5 +96,3 @@ def Sale_Trend():
 
     for row in result:
         print(row)
-
-#-
