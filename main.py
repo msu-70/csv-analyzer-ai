@@ -1,6 +1,7 @@
 from fastapi import FastAPI,UploadFile,File
 import pandas as pd
 from database import process
+from test import sql_qr
 
 app=FastAPI()
 
@@ -11,4 +12,9 @@ def Greetings():
 @app.post("/upload")
 def Upload_Here(thefile: UploadFile = File(...)):
     result=process(thefile.file)
+
+    column=result['columns']
+    print(sql_qr(column))
+
     return result
+
