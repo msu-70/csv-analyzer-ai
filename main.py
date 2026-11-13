@@ -1,4 +1,8 @@
 # python -m uvicorn main:app --reload
+# git status
+# git add .
+# git commit -m "message"
+# git push origin main
 
 from fastapi import FastAPI,UploadFile,File,Form
 from fastapi.responses import PlainTextResponse
