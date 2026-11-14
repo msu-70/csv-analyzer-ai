@@ -8,6 +8,9 @@ from fastapi import FastAPI,UploadFile,File,Form
 from fastapi.responses import PlainTextResponse
 import pandas as pd
 from database import process
+from database import run_sql
+from database import clean_sql
+from database import validate_sql
 from test import sql_qr
 
 app=FastAPI()
@@ -21,7 +24,16 @@ def Upload_Here(thefile: UploadFile = File(...),question: str = Form(...)):
     result=process(thefile.file)
 
     column=result['columns']
-    print(sql_qr(column,question)) 
+    final_sql=sql_qr(column,question)
+    clean=clean_sql(final_sql)
 
-    return result
+    if(validate_sql(clean)):
+        answer=run_sql(clean)
+    else:
+        print("Naughty Naughty")
 
+    return {
+        "Data": result,
+        "generated_sql": clean,
+        "Answer": answer
+    }

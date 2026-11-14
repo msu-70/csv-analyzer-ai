@@ -1,6 +1,6 @@
 import sqlite3 as sql
 import pandas as pd
-
+import re
 #-
 conn=sql.connect('SalesData.db',check_same_thread=False)
 cursor=conn.cursor()
@@ -24,75 +24,27 @@ def process(file):
              "rows": rows 
             }
 
-#-
-def main():
-    print(">>>Sales-Analyzer")
-    print("1. What is the total sales?")
-    print("2. What are the total sales by region?")
-    print("3. What are the top 5 products?")
-    print("4. What is the average sales per region?")
-    print("5. What was the monthly sold trend?")
+def clean_sql(query):
+    query = query.strip()
+    query = re.sub(r"```sql\s*", "", query, flags=re.IGNORECASE)
+    query = re.sub(r"```", "", query)
+    return query.strip()
 
-    reply=input("What do you want to check? : ")
+def validate_sql(final_sql):
+    final_sql = final_sql.strip()
 
-    if reply=='1':
-        Total_Sales()
-    elif reply=='2':
-        Region_Sales()
-    elif reply=='3':
-        Top_Products()
-    elif reply=='4':
-        Avrg_Sale()
-    elif reply=='5':
-        Sale_Trend()
-#
-def Total_Sales():
-    cursor.execute("SELECT SUM(Sales) FROM sales")
-    result=cursor.fetchone()
-    print("Total Sales =",result[0])
+    forbidden_words = ["DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE"]
+    for i in range(len(forbidden_words)):
+        if(forbidden_words[i] in final_sql.upper()):
+            return False
 
-def Region_Sales():
-    cursor.execute("""
-        SELECT Region,SUM(Sales)
-        FROM sales
-        GROUP BY Region
-    """)
-    result=cursor.fetchall()
+    if (final_sql.upper().startswith("SELECT")):
+        return True
+    else:
+        return False
 
-    for row in result:
-        print(row)
+def run_sql(validated_sql):
+    result = conn.execute(validated_sql)
+    rows = result.fetchall()
 
-def Top_Products():
-    cursor.execute("""
-        SELECT Product,COUNT(Product)
-        FROM sales
-        GROUP BY Product
-        ORDER BY COUNT(Product) DESC
-        LIMIT 5
-    """)
-    result=cursor.fetchall()
-
-    for row in result:
-        print(row)
-
-def Avrg_Sale():
-    cursor.execute("""
-        SELECT Region,AVG(Sales)
-        FROM sales
-        GROUP BY Region
-    """)
-    result=cursor.fetchall()
-
-    for row in result:
-        print(row)
-
-def Sale_Trend():
-    cursor.execute("""
-        SELECT strftime('%m',Date),COUNT(Product)
-        FROM sales
-        GROUP BY strftime('%m',Date)
-    """)
-    result=cursor.fetchall()
-
-    for row in result:
-        print(row)
+    return rows
