@@ -30,7 +30,7 @@ def Upload_Here(thefile: UploadFile = File(...),question: str = Form(...)):
     if(validate_sql(clean)):
         answer=run_sql(clean)
     else:
-        print("Naughty Naughty")
+        answer="Bande da putar ban te seedha swal pooch."
 
     return {
         "Data": result,
